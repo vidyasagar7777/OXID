@@ -1,0 +1,14 @@
+FROM oxidcloud.azurecr.io/oxidcloud-mysql
+MAINTAINER Sagar
+
+#Setting env vars
+ENV MYSQL_ROOT_PASSWORD=oxid \
+    MYSQL_DATABASE=oxid
+
+#Copy data dump to initdb
+COPY db/initial_dump.sql /docker-entrypoint-initdb.d
+
+#Set Hostname
+RUN echo $(grep $(hostname) /etc/hosts | cut -f1) oxiddbsrv >> /etc/hosts
+
+EXPOSE 3306
